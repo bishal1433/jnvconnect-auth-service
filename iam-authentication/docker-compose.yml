@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: jnvconnect_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: jnvconnect_auth
+      MYSQL_USER: jnvconnect
+      MYSQL_PASSWORD: jnvconnect123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  mongodb:
+    image: mongo:7.0
+    container_name: jnvconnect_mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jnvconnect
+      MONGO_INITDB_ROOT_PASSWORD: jnvconnect123
+      MONGO_INITDB_DATABASE: jnvconnect_tokens
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mysql_data:
+  mongo_data:
